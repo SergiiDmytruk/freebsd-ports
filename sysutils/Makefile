@@ -422,6 +422,7 @@
     SUBDIR += fusefs-zip
     SUBDIR += fvcool
     SUBDIR += fwup
+    SUBDIR += fwupd
     SUBDIR += gaffitter
     SUBDIR += ganglia-monitor-core
     SUBDIR += ganglia-webfrontend
