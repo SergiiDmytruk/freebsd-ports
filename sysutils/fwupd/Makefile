@@ -13,8 +13,8 @@ LICENSE=	LGPL21
 
 BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc \
 		help2man:misc/help2man \
-		vala:lang/vala
-		#libgnuefi.a:devel/gnu-efi XXX: how?
+		vala:lang/vala \
+		${LOCALBASE}/libexec/fwupd/efi/fwupdx64.efi:sysutils/fwupd-efi
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libefiboot.so:devel/libefiboot \
 		libelf.so:devel/libelf \
@@ -25,7 +25,10 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgusb.so:devel/libgusb \
 		libjcat.so:textproc/libjcat \
 		libjson-glib-1.0.so:devel/json-glib \
-		libxmlb.so:textproc/libxmlb
+		libxmlb.so:textproc/libxmlb \
+		libefiboot.so:devel/gnu-efi
+
+RUN_DEPENDS=	${LOCALBASE}/libexec/fwupd/efi/fwupdx64.efi:sysutils/fwupd-efi
 
 USES=		gnome libarchive meson pkgconfig python:3.7+ shebangfix sqlite
 GH_ACCOUNT=	SergiiDmytruk
