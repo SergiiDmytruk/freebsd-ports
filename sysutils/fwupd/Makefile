@@ -3,7 +3,7 @@
 
 PORTNAME=	fwupd
 DISTVERSION=	1.5.9
-GH_TAGNAME=	58fbbc2
+GH_TAGNAME=	46692205d
 CATEGORIES=	sysutils
 
 MAINTAINER=	norbert.kaminski@3mdeb.com
@@ -14,7 +14,9 @@ LICENSE=	LGPL21
 BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc \
 		help2man:misc/help2man \
 		vala:lang/vala
+		#libgnuefi.a:devel/gnu-efi XXX: how?
 LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libefiboot.so:devel/libefiboot \
 		libelf.so:devel/libelf \
 		libgcab-1.0.so:archivers/gcab \
 		libgnutls.so:security/gnutls \
@@ -26,6 +28,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libxmlb.so:textproc/libxmlb
 
 USES=		gnome libarchive meson pkgconfig python:3.7+ shebangfix sqlite
+GH_ACCOUNT=	SergiiDmytruk
 USE_GITHUB=	yes
 USE_GNOME=	glib20 introspection:build
 INSTALLS_ICONS=	yes
@@ -44,9 +47,10 @@ MESON_ARGS=	-Dgudev=false \
 		-Dplugin_synaptics_rmi=false \
 		-Dplugin_thunderbolt=false \
 		-Dplugin_tpm=false \
-		-Dplugin_uefi_capsule=false \
 		-Dpolkit=false \
 		-Dsystemd=false \
-		-Dtests=false
+		-Dtests=false \
+		-Defi-includedir=/usr/local/include/efi \
+		-Defi-ldsdir=/usr/local/lib
 
 .include <bsd.port.mk>

@@ -1,4 +1,7 @@
+bin/dbxtool
+bin/dfu-tool
 bin/fwupdagent
+bin/fwupdate
 bin/fwupdmgr
 bin/fwupdtool
 %%ETCDIR%%/daemon.conf
@@ -6,6 +9,7 @@ bin/fwupdtool
 %%ETCDIR%%/remotes.d/lvfs.conf
 %%ETCDIR%%/remotes.d/vendor-directory.conf
 %%ETCDIR%%/remotes.d/vendor.conf
+%%ETCDIR%%/uefi_capsule.conf
 etc/pki/fwupd-metadata/GPG-KEY-Linux-Foundation-Metadata
 etc/pki/fwupd-metadata/GPG-KEY-Linux-Vendor-Firmware-Service
 etc/pki/fwupd-metadata/LVFS-CA.pem
@@ -60,12 +64,16 @@ include/fwupd-1/libfwupdplugin/fu-srec-firmware.h
 include/fwupd-1/libfwupdplugin/fu-udev-device.h
 include/fwupd-1/libfwupdplugin/fu-usb-device.h
 include/fwupd-1/libfwupdplugin/fu-volume.h
+lib/fwupd-plugins-3/libfu_plugin_analogix.so
 lib/fwupd-plugins-3/libfu_plugin_bcm57xx.so
+lib/fwupd-plugins-3/libfu_plugin_bios.so
 lib/fwupd-plugins-3/libfu_plugin_ccgx.so
 lib/fwupd-plugins-3/libfu_plugin_colorhug.so
 lib/fwupd-plugins-3/libfu_plugin_cpu.so
 lib/fwupd-plugins-3/libfu_plugin_cros_ec.so
 lib/fwupd-plugins-3/libfu_plugin_dell_dock.so
+lib/fwupd-plugins-3/libfu_plugin_dfu.so
+lib/fwupd-plugins-3/libfu_plugin_dfu_csr.so
 lib/fwupd-plugins-3/libfu_plugin_ebitdo.so
 lib/fwupd-plugins-3/libfu_plugin_ep963x.so
 lib/fwupd-plugins-3/libfu_plugin_fastboot.so
@@ -82,7 +90,10 @@ lib/fwupd-plugins-3/libfu_plugin_steelseries.so
 lib/fwupd-plugins-3/libfu_plugin_synaptics_cxaudio.so
 lib/fwupd-plugins-3/libfu_plugin_synaptics_prometheus.so
 lib/fwupd-plugins-3/libfu_plugin_system76_launch.so
+lib/fwupd-plugins-3/libfu_plugin_uefi_capsule.so
+lib/fwupd-plugins-3/libfu_plugin_uefi_dbx.so
 lib/fwupd-plugins-3/libfu_plugin_uefi_pk.so
+lib/fwupd-plugins-3/libfu_plugin_uefi_recovery.so
 lib/fwupd-plugins-3/libfu_plugin_vli.so
 lib/fwupd-plugins-3/libfu_plugin_wacom_usb.so
 lib/girepository-1.0/Fwupd-2.0.typelib
@@ -97,12 +108,12 @@ libdata/pkgconfig/fwupd.pc
 libdata/pkgconfig/fwupdplugin.pc
 libexec/fwupd/fwupd
 libexec/fwupd/fwupd-detect-cet
+man/man1/dbxtool.1.gz
+man/man1/dfu-tool.1.gz
 man/man1/fwupdagent.1.gz
+man/man1/fwupdate.1.gz
 man/man1/fwupdmgr.1.gz
 man/man1/fwupdtool.1.gz
-share/bash-completion/completions/fwupdagent
-share/bash-completion/completions/fwupdmgr
-share/bash-completion/completions/fwupdtool
 share/dbus-1/interfaces/org.freedesktop.fwupd.xml
 share/dbus-1/system.d/org.freedesktop.fwupd.conf
 share/fish/vendor_completions.d/fwupdmgr.fish
@@ -111,6 +122,7 @@ share/fish/vendor_completions.d/fwupdmgr.fish
 %%DATADIR%%/install_dell_bios_exe.py
 %%DATADIR%%/metainfo/org.freedesktop.fwupd.remotes.lvfs-testing.metainfo.xml
 %%DATADIR%%/metainfo/org.freedesktop.fwupd.remotes.lvfs.metainfo.xml
+%%DATADIR%%/quirks.d/analogix.quirk
 %%DATADIR%%/quirks.d/bcm57xx.quirk
 %%DATADIR%%/quirks.d/ccgx-ids.quirk
 %%DATADIR%%/quirks.d/ccgx.quirk
@@ -118,6 +130,8 @@ share/fish/vendor_completions.d/fwupdmgr.fish
 %%DATADIR%%/quirks.d/cpu.quirk
 %%DATADIR%%/quirks.d/cros-ec.quirk
 %%DATADIR%%/quirks.d/dell-dock.quirk
+%%DATADIR%%/quirks.d/dfu-csr.quirk
+%%DATADIR%%/quirks.d/dfu.quirk
 %%DATADIR%%/quirks.d/ebitdo.quirk
 %%DATADIR%%/quirks.d/ep963x.quirk
 %%DATADIR%%/quirks.d/fastboot.quirk
@@ -134,6 +148,8 @@ share/fish/vendor_completions.d/fwupdmgr.fish
 %%DATADIR%%/quirks.d/synaptics-cxaudio.quirk
 %%DATADIR%%/quirks.d/synaptics-prometheus.quirk
 %%DATADIR%%/quirks.d/system76-launch.quirk
+%%DATADIR%%/quirks.d/uefi-capsule.quirk
+%%DATADIR%%/quirks.d/uefi-recovery.quirk
 %%DATADIR%%/quirks.d/vli-pd.quirk
 %%DATADIR%%/quirks.d/vli-usbhub-bizlink.quirk
 %%DATADIR%%/quirks.d/vli-usbhub-hyper.quirk
@@ -142,6 +158,7 @@ share/fish/vendor_completions.d/fwupdmgr.fish
 %%DATADIR%%/quirks.d/wacom-usb.quirk
 %%DATADIR%%/remotes.d/vendor/firmware/README.md
 %%DATADIR%%/simple_client.py
+%%DATADIR%%/uefi-capsule-ux.tar.xz
 share/gir-1.0/Fwupd-2.0.gir
 share/gir-1.0/FwupdPlugin-1.0.gir
 share/icons/hicolor/scalable/apps/org.freedesktop.fwupd.svg
