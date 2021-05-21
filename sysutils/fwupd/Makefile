@@ -53,7 +53,6 @@ MESON_ARGS=	-Dgudev=false \
 		-Dpolkit=false \
 		-Dsystemd=false \
 		-Dtests=false \
-		-Defi-includedir=/usr/local/include/efi \
-		-Defi-ldsdir=/usr/local/lib
+		-Defi_binary=false
 
 .include <bsd.port.mk>
