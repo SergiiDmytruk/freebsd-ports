@@ -28,7 +28,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/src/efiboot.pc.in
 
 do-install:
-	${INSTALL_LIB} ${WRKSRC}/src/libefiboot.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/src/libefiboot.so ${STAGEDIR}${PREFIX}/lib/libefiboot.so.0.24
+	${LN} -fs libefiboot.so.0.24 ${STAGEDIR}${PREFIX}/lib/libefiboot.so.0
+	${LN} -fs libefiboot.so.0.24 ${STAGEDIR}${PREFIX}/lib/libefiboot.so
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/efivar/
 	${INSTALL_DATA} ${WRKSRC}/src/include/efivar/efiboot.h ${STAGEDIR}${PREFIX}/include/efivar/
 	${INSTALL_DATA} ${WRKSRC}/src/include/efivar/efiboot-creator.h ${STAGEDIR}${PREFIX}/include/efivar/
